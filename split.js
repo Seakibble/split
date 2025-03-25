@@ -105,23 +105,23 @@ function formatTime(input) {
 
             let s = Math.floor(this.s)
             if (s == 1) {
-                s += ' second'
+                s += '<span class="hide"> </span>s<span class="hide">econd</span>'
             } else {
-                s += ' seconds'
+                s += '<span class="hide"> </span>s<span class="hide">econds</span>'
             }
 
             let m = ''
             if (this.m > 1) {
-                m = this.m + ' minutes, '
+                m = this.m + '<span class="hide"> </span>m<span class="hide">inutes,</span> '
             } else if (this.m == 1) {
-                m = this.m + ' minute, '
+                m = this.m + '<span class="hide"> </span>m<span class="hide">inute,</span> '
             }
 
             let h = ''
             if (this.h > 1) {
-                h = this.h + ' hours, '
+                h = this.h + '<span class="hide"> </span>h<span class="hide">ours,</span> '
             } else if (this.h == 1) {
-                h = this.h + ' hour, '
+                h = this.h + '<span class="hide"> </span>h<span class="hide">our,</span> '
             }
 
             return `${h}${m}${s}`
