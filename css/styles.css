@@ -1,8 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap');
+
+
 body {
     background: #111;
     color: #eee;
 
-    font-family: 'Courier New', Courier, monospace;
+    font-family: 'Inconsolata', 'Courier New', Courier, monospace;
 
     font-size: 20px;
 }
