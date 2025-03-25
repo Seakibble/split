@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Split Me</title>
+
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="content">
+        <h1><span id="heading">Split Me</span></h1>
+
+        <div class="controls">
+            <button id="start">Start Session 🔥</button>
+            <input id='task' type="text" placeholder="Task name">
+            <button id="split">Split ⏱️</button>
+            <button id="break">Break 🏖️</button>
+        </div>
+        <div id="splits" class="splits">
+            <div class="split">
+                <div class='id'>#</div> 
+                <div class='name'>Task</div>  
+                <div class='duration'>Time Taken</div>
+                <div class='timestamp'>Timestamp</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="split.js"></script>
+</body>
+</html>

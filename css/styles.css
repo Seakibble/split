@@ -1,0 +1,141 @@
+body {
+    background: #111;
+    color: #eee;
+
+    font-family: 'Courier New', Courier, monospace;
+
+    font-size: 20px;
+}
+
+h1 {
+    font-size: 4em;
+    text-align: center;
+    margin: 0 0 30px;
+    line-height: 1em;
+    color: royalblue;
+
+    transition: opacity 30s;
+}
+h1:hover {
+    opacity: 1;
+    transition: opacity 1s;
+}
+
+h1.active {
+    opacity: 0.25;
+    animation: tick 1s ease-in-out infinite alternate;
+}
+
+@keyframes tick {
+    0% {
+        opacity: #4169e1aa;
+    }
+    50% {
+        color: #4169e1;
+    }
+    100% {
+        color: #4e78f7;
+    }
+}
+
+.content {
+    max-width: 1000px;
+    margin: 30px auto;
+
+    padding: 1em;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+button, input {
+    display: block;
+    border-radius: 2px;
+}
+button {
+    padding: 5px 10px;
+    background-color: royalblue;
+    border: none;
+    cursor: pointer;
+    transition: background 0.25s, color 0.25s;
+}
+
+button:hover {
+    background-color: rgb(140, 169, 255);
+    color: black;
+
+}
+
+input {
+    background: #222;
+    color: #ccc;
+    padding: 5px 10px;
+    margin-left: 50px;
+    border: none;
+    transition: background 0.15s;
+    flex-grow: 1;
+}
+input::placeholder {
+    color: #999;
+    transition: color 0.25s;
+}
+input:focus::placeholder {
+    color: royalblue
+}
+input:focus {
+    outline: none;
+    color: white;
+    background-color: rgb(21, 47, 122);
+}
+
+.splits {
+    margin-top: 40px;
+}
+.split {
+    color: #aaa;
+    display: grid;
+    grid-template-columns: 50px 2fr 3fr 150px;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    padding: 10px 0;
+    font-style: italic;
+}
+
+.split:first-child {
+    background-color: #222;
+    color: white;
+    font-style: normal;
+}
+
+.id {
+    padding-left: 0.5em;
+}
+.id, .name {
+    font-weight: bold;
+}
+
+.split {
+    animation: fadeIn 1s ease-out;
+    line-height: 1em;
+}
+@keyframes fadeIn {
+    from {
+        transform: translate(-15px);
+        opacity: 0;
+    }
+}
+
+.break {
+    background: rgb(32, 0, 60);
+    border-color:purple;
+    color: purple;
+}
+
+.start {
+    background: rgb(45, 33, 3);
+    color: goldenrod;
+    border-color:goldenrod;
+}
