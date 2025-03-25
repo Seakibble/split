@@ -1,6 +1,7 @@
 const $start = document.getElementById('start')
 const $split = document.getElementById('split')
 const $break = document.getElementById('break')
+const $complete = document.getElementById('complete')
 
 const $heading = document.getElementById('heading')
 const $splits = document.getElementById('splits')
@@ -23,9 +24,10 @@ $start.addEventListener('click', (e) => {
         $heading.innerText = timeObject.toString()
     }, 1000)
 
-    $task.value = 'Start'
+    $task.value = '🚀 Start'
     split('start')
 
+    $start.classList.add('active')
     $start.disabled = true
     document.querySelector('h1').classList.add('active')
 })
@@ -39,8 +41,21 @@ $task.addEventListener('keypress', (e)=>{
     }
 })
 
+$complete.addEventListener('click', (e) => {
+    if ($task.value == '') {
+        $task.value = '✔️ Work'
+    } else {
+        $task.value = '✔️ ' + $task.value
+    }
+    split('complete')
+})
+
 $break.addEventListener('click', (e)=>{
-    $task.value = 'Break'
+    if ($task.value == '') {
+        $task.value = '🏖️ Break'
+    } else {
+        $task.value = '🏖️ ' + $task.value
+    }
     split('break')
 })
 
@@ -71,6 +86,8 @@ function split(type = false) {
                 <div class='timestamp'>${timeObject.toString(true)}</div>`
         $splits.append($newSplit)
         splitTimes.push(timeObject)
+
+        window.scrollTo(0, document.body.scrollHeight);
     }
 }
 
