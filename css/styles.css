@@ -2,7 +2,7 @@
 
 
 body {
-    background: #111;
+    background: #0a0a0a;
     color: #eee;
 
     font-family: 'Inconsolata', 'Courier New', Courier, monospace;
@@ -106,6 +106,7 @@ input:focus {
 }
 .split {
     color: #aaa;
+    background-color: #111;
     display: grid;
     grid-template-columns: 50px 2fr 3fr 150px;
     border-left: 5px solid transparent;
@@ -142,9 +143,9 @@ input:focus {
 }
 
 .break {
-    background: rgb(20, 0, 40);
-    border-color:purple;
-    color: purple;
+    background: rgb(20, 10, 40);
+    border-color:rgb(161, 35, 161);
+    color: rgb(161, 35, 161);
 }
 
 .start {
