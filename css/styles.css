@@ -21,14 +21,14 @@ h1 {
 
     transition: opacity 30s;
 }
-h1:hover {
-    opacity: 1;
-    transition: opacity 1s;
-}
-
 h1.active {
     opacity: 0.4;
     animation: tick 1s ease-in-out infinite alternate;
+}
+
+h1.active:hover {
+    opacity: 1;
+    transition: opacity 1s;
 }
 
 @keyframes tick {
