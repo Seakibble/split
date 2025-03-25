@@ -27,7 +27,7 @@ h1:hover {
 }
 
 h1.active {
-    opacity: 0.25;
+    opacity: 0.4;
     animation: tick 1s ease-in-out infinite alternate;
 }
 
@@ -65,7 +65,13 @@ button {
     background-color: royalblue;
     border: none;
     cursor: pointer;
-    transition: background 0.25s, color 0.25s;
+    transition: background 0.25s, color 0.25s, filter 1s;
+}
+
+button:disabled {
+    /* background: #555;
+    color: #222; */
+    filter: grayscale(1)
 }
 
 button:hover {

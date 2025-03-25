@@ -26,6 +26,7 @@ $start.addEventListener('click', (e) => {
     $task.value = 'Start'
     split('start')
 
+    $start.disabled = true
     document.querySelector('h1').classList.add('active')
 })
 
