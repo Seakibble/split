@@ -237,10 +237,10 @@ input:focus {
 @media screen and (width < 800px) {
     .controls {
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr;
     }
     button:first-child, input {
-        grid-column: span 3;
+        grid-column: span 2;
     }
     button, input {
         width: 100%;
@@ -259,6 +259,15 @@ input:focus {
     }
 
     .hide {
+        display: none;
+    }
+}
+
+@media screen and (width < 500px) {
+    .split {
+        grid-template-columns: 1fr 90px;
+    }
+    .timestamp {
         display: none;
     }
 }
