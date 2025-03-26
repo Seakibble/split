@@ -11,6 +11,16 @@ body {
     color: #eee;
 
     font-family: 'Inconsolata', 'Courier New', Courier, monospace;
+
+    display: grid;
+    grid-template-rows: 1fr auto;
+    min-height: 100vh;
+}
+
+footer {
+    text-align: center;
+    color: #555;
+    padding: 1em;
 }
 
 h1 {
@@ -27,6 +37,9 @@ h1.active {
     animation: tick 1s ease-in-out infinite alternate;
 
     cursor: default;
+}
+h1.done {
+    color: white;
 }
 
 h1.active:hover {
@@ -48,6 +61,7 @@ h1.active:hover {
 
 .content {
     max-width: 1000px;
+    width: 100%;
     margin: 0 auto;
 
 }
@@ -79,15 +93,17 @@ select, option {
     font-weight: bold;
 }
 select {
-    transition: opacity 1s;
+    transition: opacity 1s, background 0.25s;
 }
-
+select:hover {
+    background-color: rgb(140, 169, 255);
+}
 
 button {
     font-weight: bold;
     background-color: royalblue;
     cursor: pointer;
-    transition: background 0.25s, color 0.25s, transform 0.25s, opacity 1s;
+    transition: background 0.25s, color 0.25s, transform 0.25s, opacity 1s ease-in;
 
     overflow: hidden;
 }
@@ -103,6 +119,16 @@ button {
     0% { transform: translate(0, 0);}
     40% { transform: translate(-5px, 5px);}
     100% { transform: translate(50px, -50px);}
+}
+
+#end {
+    background-color: darkred;
+    color: white;
+}
+
+#end:hover {
+    background-color: crimson;
+    color: white;
 }
 
 button:disabled, select:disabled, input:disabled {
@@ -129,11 +155,18 @@ button b {
 button:hover {
     background-color: rgb(140, 169, 255);
     color: black;
-    transform: scale(1.1);
+    transform: translateY(-3px);
 }
-button:hover b {
-    transform: scale(1.1);
+
+button:active {
+    background-color: rgb(140, 169, 255);
+    color: black;
+    transform: translateY(3px);
 }
+
+/* button:hover b {
+    transform: scale(1.1);
+} */
 
 input {
     background: #1c1c1c;
@@ -227,20 +260,22 @@ input:focus {
     color: cyan;
 }
 
-.start {
-    /* background: rgb(45, 33, 3); */
+.start, .end {
     color: white;
-    /* border-color:goldenrod; */
+    background-color: #1a1a1a;
 }
 
 
+
+/* MARK: @media < 800px 
+ */
 @media screen and (width < 800px) {
     .controls {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr;
     }
     button:first-child, input {
-        grid-column: span 2;
+        grid-column: span 3;
     }
     button, input {
         width: 100%;
@@ -254,15 +289,15 @@ input:focus {
     .id {
         display: none;
     }
-    .name {
-        padding-left: 0.5em;
-    }
 
     .hide {
         display: none;
     }
 }
 
+
+/* MARK: @media < 500px 
+ */
 @media screen and (width < 500px) {
     .split {
         grid-template-columns: 1fr 90px;

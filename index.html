@@ -15,21 +15,24 @@
         <h1><span id="heading">Split</span></h1>
 
         <div class="controls">
-            <button id="start">Start Work Session <b>🚀</b></button>
+            <button id="start"><b>🚀</b> Start Session</button>
             <input id='task' type="text" placeholder="Item name" disabled>
             <button id="split" disabled>Split</button>
             <select name="type" id="type" disabled></select>
+            <button id="end" disabled><b>🏁</b> End</button>
         </div>
         <div id="splits" class="splits">
             <div class="split">
-                <!-- <div class='id'>#</div>  -->
                 <div class='name'>Item</div>  
-                <div class='duration'>Time</div>
+                <div class='duration'>Elapsed</div>
                 <div class='timestamp'>Timestamp</div>
             </div>
         </div>
     </div>
-
+    
+    <footer>
+        <p>Copyright &copy; 2025 Max Leeming</p>
+    </footer>
     <script src="split.js"></script>
 </body>
 </html>
