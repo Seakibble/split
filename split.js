@@ -1,11 +1,40 @@
 const $start = document.getElementById('start')
 const $split = document.getElementById('split')
-const $break = document.getElementById('break')
-const $complete = document.getElementById('complete')
+const $type = document.getElementById('type')
 
 const $heading = document.getElementById('heading')
 const $splits = document.getElementById('splits')
 const $task = document.getElementById('task')
+
+let types = {
+    generic: '⏱️',
+    working: '✔️',
+    
+    // bedtime: '🛏️',
+    // cleaning: '🧹',        
+    coding: '🖥️',
+    commuting: '🚗',
+    creating: '🎨',
+
+    eating: '🌯',
+    errand: '🏃‍♀️',
+    exercise: '🏋️‍♀️',
+    hygiene: '🧼',
+
+    journaling: '📓',
+    meditating: '👁️',
+    phone: '📱',
+    recreation: '🎮',
+    relaxing: '🏖️',
+    
+    socializing: '🍻',
+    // writing: '🖋️',
+    
+}
+for (const type in types) {
+    $type.innerHTML += `<option value="${type}"><span>${types[type]}</span> <span>${titleCase(type)}</span></option>`
+}
+
 
 
 let sessionStart = null
@@ -17,10 +46,10 @@ let splitTimes = []
 $start.addEventListener('click', (e) => {
     sessionStart = Date.now()
     
-    timeObject = formatTime((Date.now() - sessionStart))
+    timeObject = makeTimeObject((Date.now() - sessionStart))
     $heading.innerText = timeObject.toString()
     sessionTimer = setInterval(()=> {
-        timeObject = formatTime((Date.now() - sessionStart))
+        timeObject = makeTimeObject((Date.now() - sessionStart))
         $heading.innerText = timeObject.toString()
     }, 1000)
 
@@ -30,41 +59,96 @@ $start.addEventListener('click', (e) => {
     $start.classList.add('active')
     $start.disabled = true
     document.querySelector('h1').classList.add('active')
+
+    setTimeout(() => {
+        $type.disabled = false
+        $task.disabled = false
+        $split.disabled = false
+    }, 250);
 })
 
-$split.addEventListener('click', ()=>{
-    split()
+$split.addEventListener('click', () => {
+    handleSplit()
 })
 $task.addEventListener('keypress', (e)=>{
     if (e.code == "Enter") {
-        split()
+        handleSplit()
     }
 })
 
-$complete.addEventListener('click', (e) => {
-    if ($task.value == '') {
-        $task.value = '✔️ Work'
-    } else {
-        $task.value = '✔️ ' + $task.value
-    }
-    split('complete')
-})
+function titleCase(str) {
+    str = str.split('')
+    str[0] = str[0].toUpperCase()
+    return str.join('')
+}
 
-$break.addEventListener('click', (e)=>{
+function handleSplit() {
     if ($task.value == '') {
-        $task.value = '🏖️ Break'
+        if ($type.value == 'generic') {
+            $task.value = types[$type.value] + ' -'
+        } else {
+            $task.value = types[$type.value] + ' ' + titleCase($type.value)
+        }
     } else {
-        $task.value = '🏖️ ' + $task.value
+        $task.value = types[$type.value] + ' ' + $task.value
     }
-    split('break')
-})
+        
+    split($type.value)
+
+    // switch ($type.value) {
+    //     case 'work':
+    //         if ($task.value == '') {
+    //             $task.value = '✔️ Work'
+    //         } else {
+    //             $task.value = '✔️ ' + $task.value
+    //         }
+    //         split('work')
+    //         break
+
+    //     case 'break':
+    //         if ($task.value == '') {
+    //             $task.value = '🏖️ Break'
+    //         } else {
+    //             $task.value = '🏖️ ' + $task.value
+    //         }
+    //         split('break')
+    //         break
+
+    //     case 'meditation':
+    //         if ($task.value == '') {
+    //             $task.value = '👁️ Meditation'
+    //         } else {
+    //             $task.value = '👁️ ' + $task.value
+    //         }
+    //         split('meditation')
+    //         break
+        
+    //     case 'hygiene':
+    //         if ($task.value == '') {
+    //             $task.value = '🧼 Hygiene'
+    //         } else {
+    //             $task.value = '🧼 ' + $task.value
+    //         }
+    //         split('meditation')
+    //         break
+
+    //     default:
+    //         if ($task.value == '') {
+    //             $task.value = '⏱️ -'
+    //         } else {
+    //             $task.value = '⏱️ ' + $task.value
+    //         }
+    //         split()
+    // }
+}
+
 
 function split(type = false) {
     if (sessionTimer != null) {
-        let diff = formatTime(Date.now() - sessionStart)
+        let diff = makeTimeObject(Date.now() - sessionStart)
         if (splitTimes.length > 0) {
             diff = timeObject.i - splitTimes[splitTimes.length-1].i
-            diff = formatTime(diff)
+            diff = makeTimeObject(diff)
         }
 
         let id = splitTimes.length + 1
@@ -79,8 +163,9 @@ function split(type = false) {
         if (type) {
             $newSplit.classList.add(type)    
         }
+        // <div class='id'>${id}</div> 
         $newSplit.innerHTML += `
-                <div class='id'>${id}</div> 
+                
                 <div class='name'>${name}</div> 
                 <div class='duration'>${diff.toText()}</div>
                 <div class='timestamp'>${timeObject.toString(true)}</div>`
@@ -92,7 +177,7 @@ function split(type = false) {
 }
 
 
-function formatTime(input) {
+function makeTimeObject(input) {
     let seconds = (input / 1000) % 60
     let minutes = Math.floor(input / 60000)
     let hours = Math.floor(minutes / 60)

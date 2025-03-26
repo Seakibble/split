@@ -66,17 +66,28 @@ h1.active:hover {
     padding: 0.75em;
 }
 
-button, input {
+button, input, select {
     display: block;
     border-radius: 2px;
     padding: 5px 10px;
+    border: none;
 }
+
+select, option {
+    background-color: royalblue;
+    cursor: pointer;
+    font-weight: bold;
+}
+select {
+    transition: opacity 1s;
+}
+
+
 button {
     font-weight: bold;
     background-color: royalblue;
-    border: none;
     cursor: pointer;
-    transition: background 0.25s, color 0.25s, filter 1s, transform 0.25s;
+    transition: background 0.25s, color 0.25s, transform 0.25s, opacity 1s;
 
     overflow: hidden;
 }
@@ -94,7 +105,11 @@ button {
     100% { transform: translate(50px, -50px);}
 }
 
-button:disabled {
+button:disabled, select:disabled, input:disabled {
+    opacity: 0.25;
+}
+
+#start:disabled {
     animation: hideAway 1.75s 1s ease-in-out forwards;
 }
 @keyframes hideAway {
@@ -124,7 +139,7 @@ input {
     background: #1c1c1c;
     color: #ccc;
     border: none;
-    transition: background 0.15s;
+    transition: background 0.15s, opacity 1s;
     flex-grow: 1;
 }
 input::placeholder {
@@ -148,9 +163,10 @@ input:focus {
     color: #aaa;
     background-color: #0e0e0e;
     display: grid;
-    grid-template-columns: 50px 2fr 3fr 150px;
+    grid-template-columns: 2fr 3fr 150px;
     border-left: 5px solid transparent;
-    padding: 10px 0;
+    border-right: 5px solid transparent;
+    padding: 10px;
 }
 
 .split:first-child {
@@ -158,7 +174,8 @@ input:focus {
     border-bottom: 3px solid #444;
     color: white;
     font-style: normal;
-    border-left: none;
+    border: none;
+    padding: 10px 15px;
 }
 
 .id {
@@ -170,6 +187,9 @@ input:focus {
 
 .duration, .timestamp {
     font-style: italic;
+}
+.timestamp {
+    text-align: right;
 }
 
 .split {
@@ -183,21 +203,33 @@ input:focus {
     }
 }
 
-.break {
-    /* background: rgb(20, 10, 40); */
-    /* border-color:goldenrod; */
+.relaxing {
+    border-left-color: goldenrod;
     color: goldenrod;
 }
 
-.complete {
+.meditating {
+    color: rgb(192, 7, 44);
+    border-left-color: rgb(192, 7, 44);
+}
+.exercise {
     /* background: rgb(10, 40, 20); */
-    border-color: rgb(35, 161, 41);
+    border-left-color: purple;
+    color: purple;
+}
+.working {
+    /* background: rgb(10, 40, 20); */
+    border-left-color: rgb(35, 161, 41);
     color: rgb(35, 161, 41);
+}
+.hygiene {
+    border-left-color: cyan;
+    color: cyan;
 }
 
 .start {
     /* background: rgb(45, 33, 3); */
-    color: royalblue;
+    color: white;
     /* border-color:goldenrod; */
 }
 
