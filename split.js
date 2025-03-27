@@ -19,12 +19,13 @@ let types = {
     working: '✔️',
 
     bedtime: '🛏️',
-    // cleaning: '🧹',        
+    cleaning: '🧹',        
     coding: '🖥️',
+    cooking: '🌯',
     commuting: '🚗',
     creating: '🎨',
 
-    eating: '🌯',
+    eating: '🍽️',
     errand: '🏃‍♀️',
     exercise: '🏋️‍♀️',
     hygiene: '🧼',
@@ -36,7 +37,7 @@ let types = {
     relaxing: '🏖️',
 
     socializing: '🍻',
-    // writing: '🖋️',
+    writing: '🖋️',
 }
 for (const type in types) {
     $type.innerHTML += `<option value="${type}"><span>${types[type]}</span> <span>${titleCase(type)}</span></option>`
