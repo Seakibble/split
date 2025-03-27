@@ -8,11 +8,17 @@ const $splits = document.getElementById('splits')
 const $task = document.getElementById('task')
 const $stats = document.getElementById('stats')
 
+const $editSplit = document.getElementById('editSplit')
+const $editSelect = document.getElementById('editSplit__select')
+const $editInput = document.getElementById('editSplit__input')
+const $editUpdate = document.getElementById('editSplit__update')
+const $editCancel = document.getElementById('editSplit__cancel')
+
 let types = {
     generic: '⏱️',
     working: '✔️',
 
-    // bedtime: '🛏️',
+    bedtime: '🛏️',
     // cleaning: '🧹',        
     coding: '🖥️',
     commuting: '🚗',
@@ -31,11 +37,12 @@ let types = {
 
     socializing: '🍻',
     // writing: '🖋️',
-
 }
 for (const type in types) {
     $type.innerHTML += `<option value="${type}"><span>${types[type]}</span> <span>${titleCase(type)}</span></option>`
 }
+
+$editSelect.innerHTML = $type.innerHTML
 
 let sessionStart = null
 let sessionTimer = null
@@ -57,8 +64,8 @@ if (data == null) {
     if (session.active) {
         splitTimes = session.splits
 
-        session.splits.forEach(split => {
-            displaySplit(split)
+        session.splits.forEach((split, index) => {
+            displaySplit(split, index)
         })
 
         sessionStart = session.start
@@ -81,7 +88,7 @@ $start.addEventListener('click', (e) => {
     sessionActive = true
 
     $splits.innerHTML = `
-        <div class="split">
+        <div class="split split_header">
             <div class='name'>Item</div>
             <div class='duration'>Elapsed</div>
             <div class='timestamp'>Timestamp</div>
@@ -139,6 +146,60 @@ $task.addEventListener('keypress', (e)=>{
     }
 })
 
+// MARK: Edit Split EVNT
+let editing = null
+$splits.addEventListener('click', (e) => {
+    let clicky = e.target.closest('.split')
+    if (clicky.classList.contains('split_header')) {
+        return
+    }
+    
+    if (clicky.classList.contains('split')) {
+        editing = clicky
+        let name = clicky.querySelector('.name').innerText
+        name = name.split(' ')
+        name.shift()
+        name = name.join(' ')
+        $editInput.value = name
+        
+        let type = clicky.classList.value.replace('split ', '')
+        $editSelect.value = type
+
+        $editSplit.classList.remove('hide')
+        // focus($editInput)
+    }
+})
+
+$editUpdate.addEventListener('click', () => {
+    $editSplit.classList.add('hide')
+
+    let split = splitTimes[editing.dataset.index]
+
+    console.log(split.name, $editInput.value)
+    console.log(split.type, $editSelect.value)
+
+    let newName = types[$editSelect.value] + ' ' + $editInput.value
+    let newType = $editSelect.value
+
+    editing.classList.remove(split.type)
+    editing.classList.add(newType)
+    editing.querySelector('.name').innerText = newName
+    split.name = newName
+    split.type = newType
+    
+    editing = null
+    save()
+    getStats()
+})
+
+$editCancel.addEventListener('click', () => {
+    $editSplit.classList.add('hide')
+    
+    editing = null
+})
+
+
+// MARK: startTimer()
 function startTimer() {
     timeObject = makeTimeObject((Date.now() - sessionStart))
     document.querySelector('h1').classList.add('active')
@@ -150,12 +211,16 @@ function startTimer() {
     }, 1000)
 }
 
+
+// MARK: titleCase()
 function titleCase(str) {
     str = str.split('')
     str[0] = str[0].toUpperCase()
     return str.join('')
 }
 
+
+// MARK: handleSplit()
 function handleSplit() {
     if ($task.value == '') {
         if ($type.value == 'generic') {
@@ -171,6 +236,7 @@ function handleSplit() {
 }
 
 
+// MARK: split()
 function split(type = false) {
     if (sessionTimer != null) {
         let diff = Date.now() - sessionStart
@@ -195,13 +261,16 @@ function split(type = false) {
 
         save()
 
-        displaySplit(split)
+        displaySplit(split, splitTimes.length-1)
     }
 }
 
-function displaySplit(split) {
+
+// MARK: displaySplit()
+function displaySplit(split, index = null) {
     let $newSplit = document.createElement('div')
     $newSplit.classList.add('split')
+    $newSplit.dataset.index = index
 
     if (split.type) {
         $newSplit.classList.add(split.type)
@@ -221,6 +290,7 @@ function displaySplit(split) {
     getStats()
 }
 
+// MARK: makeTimeObject()
 function makeTimeObject(input) {
     let seconds = (input / 1000) % 60
     let minutes = Math.floor(input / 60000)
@@ -276,6 +346,8 @@ function makeTimeObject(input) {
     }
 }
 
+
+// MARK: getStats()
 function getStats() {
     let categories = {}
     splitTimes.forEach(split => {

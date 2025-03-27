@@ -12,6 +12,25 @@
 </head>
 <body>
     <div class="content">
+        <div id="editSplit" class="hide">
+            <div class="card">
+                <h2>Edit Split</h2>
+                <div class="editSplit__details">
+                    <div>
+                        <label for="editSplit__input">Item name: </label>
+                        <input id="editSplit__input" type="text">
+                    </div>
+                    <div>
+                        <label for="editSplit__select">Category: </label>
+                        <select name="" id="editSplit__select"></select>
+                    </div>
+                </div>
+                <div class="editSplit__buttons">
+                    <button id="editSplit__update">✔️ Update</button>
+                    <button id="editSplit__cancel">❌ Cancel</button>
+                </div>
+            </div>
+        </div>
         <h1><span id="heading">Split</span></h1>
 
         <div class="controls">
@@ -22,7 +41,7 @@
             <button id="end" disabled><b>🏁</b> End</button>
         </div>
         <div id="splits" class="splits">
-            <div class="split">
+            <div class="split split_header">
                 <div class='name'>Item</div>  
                 <div class='duration'>Elapsed</div>
                 <div class='timestamp'>Timestamp</div>
