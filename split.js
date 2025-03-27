@@ -6,6 +6,36 @@ const $type = document.getElementById('type')
 const $heading = document.getElementById('heading')
 const $splits = document.getElementById('splits')
 const $task = document.getElementById('task')
+const $stats = document.getElementById('stats')
+
+let types = {
+    generic: '⏱️',
+    working: '✔️',
+
+    // bedtime: '🛏️',
+    // cleaning: '🧹',        
+    coding: '🖥️',
+    commuting: '🚗',
+    creating: '🎨',
+
+    eating: '🌯',
+    errand: '🏃‍♀️',
+    exercise: '🏋️‍♀️',
+    hygiene: '🧼',
+
+    journaling: '📓',
+    meditating: '👁️',
+    phone: '📱',
+    recreation: '🎮',
+    relaxing: '🏖️',
+
+    socializing: '🍻',
+    // writing: '🖋️',
+
+}
+for (const type in types) {
+    $type.innerHTML += `<option value="${type}"><span>${types[type]}</span> <span>${titleCase(type)}</span></option>`
+}
 
 let sessionStart = null
 let sessionTimer = null
@@ -25,11 +55,12 @@ if (data == null) {
     let session = data.sessions[data.sessions.length - 1]
 
     if (session.active) {
+        splitTimes = session.splits
+
         session.splits.forEach(split => {
             displaySplit(split)
         })
 
-        splitTimes = session.splits
         sessionStart = session.start
 
         startTimer()
@@ -46,40 +77,9 @@ if (data == null) {
 
 
 
-let types = {
-    generic: '⏱️',
-    working: '✔️',
-    
-    // bedtime: '🛏️',
-    // cleaning: '🧹',        
-    coding: '🖥️',
-    commuting: '🚗',
-    creating: '🎨',
-
-    eating: '🌯',
-    errand: '🏃‍♀️',
-    exercise: '🏋️‍♀️',
-    hygiene: '🧼',
-
-    journaling: '📓',
-    meditating: '👁️',
-    phone: '📱',
-    recreation: '🎮',
-    relaxing: '🏖️',
-    
-    socializing: '🍻',
-    // writing: '🖋️',
-    
-}
-for (const type in types) {
-    $type.innerHTML += `<option value="${type}"><span>${types[type]}</span> <span>${titleCase(type)}</span></option>`
-}
-
-
-
 $start.addEventListener('click', (e) => {
     sessionActive = true
-    
+
     $splits.innerHTML = `
         <div class="split">
             <div class='name'>Item</div>
@@ -107,7 +107,12 @@ $start.addEventListener('click', (e) => {
 
 $end.addEventListener('click', (e) => {
     sessionActive = false
-    $task.value = '🏁 End'
+    if ($task.value) {
+        $task.value = '🏁 ' + $task.value
+    } else {
+        $task.value = '🏁 End'
+    }
+    
     split('end')
 
     $start.classList.remove('active')
@@ -168,10 +173,9 @@ function handleSplit() {
 
 function split(type = false) {
     if (sessionTimer != null) {
-        let diff = makeTimeObject(Date.now() - sessionStart)
+        let diff = Date.now() - sessionStart
         if (splitTimes.length > 0) {
             diff = timeObject.i - splitTimes[splitTimes.length - 1].i
-            diff = makeTimeObject(diff)
         }
 
         let name = '-'
@@ -182,7 +186,7 @@ function split(type = false) {
 
         let split = {
             name: name,
-            diff: diff.toText(),
+            diff: diff,
             timestamp: timeObject.toString(true),
             type: type,
             i: timeObject.i
@@ -203,14 +207,18 @@ function displaySplit(split) {
         $newSplit.classList.add(split.type)
     }
 
+    let diffTime = makeTimeObject(split.diff)
+    let diffText = diffTime.toText()
 
     $newSplit.innerHTML += `
                 <div class='name'>${split.name}</div> 
-                <div class='duration'>${split.diff}</div>
+                <div class='duration'>${diffText}</div>
                 <div class='timestamp'>${split.timestamp}</div>`
     $splits.append($newSplit)
 
     window.scrollTo(0, document.body.scrollHeight);
+
+    getStats()
 }
 
 function makeTimeObject(input) {
@@ -265,6 +273,39 @@ function makeTimeObject(input) {
 
             return `${h}${m}${s}`
         }
+    }
+}
+
+function getStats() {
+    let categories = {}
+    splitTimes.forEach(split => {
+        if (split.type === 'start' || split.type === 'end') {
+            return
+        }
+        if (categories[split.type] === undefined) {
+            categories[split.type] = 0
+        }
+        categories[split.type] += split.diff
+    })
+
+    let total = 0
+    let keys = []
+    for (category in categories) {
+        total += categories[category]
+        let time = makeTimeObject(categories[category]).toString(true)
+        // time = time.split(' ')[0]
+        keys.push([category, categories[category], time])
+    }
+
+    keys.sort((a, b) => {
+        return b[1] - a[1]
+    })
+
+    $stats.innerHTML = ''
+    for (const key in keys) {
+        $stats.innerHTML += `<div class='stat ${keys[key][0]}'>
+            <b>${types[keys[key][0]]} ${titleCase(keys[key][0])}</b> <span><span class="hide">|</span> ${keys[key][2]}</span> <span>(${Math.round(keys[key][1] / total * 1000) / 10}%)</span>
+        </div>`
     }
 }
 
