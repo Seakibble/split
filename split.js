@@ -32,6 +32,7 @@ let types = {
     hygiene: '🧼',
 
     journaling: '📓',
+    maintenance: '🔧',
     meditating: '👁️',
     phone: '📱',
     recreation: '🎮',
