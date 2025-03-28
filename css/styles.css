@@ -340,7 +340,7 @@ input:focus {
     gap: 1em;
     justify-content: center;
     color: #aaa;
-    padding: 0 1em;
+    padding: 0 1.25em;
 }
 
 .stat {
@@ -348,6 +348,12 @@ input:focus {
     box-shadow: 0 0 3px black;
     padding: 3px 10px;
     border-radius: 10px;
+}
+
+.total {
+    width: 100%;
+    text-align: center;
+    color: white;
 }
 
 /* MARK: @media < 800px 
@@ -414,5 +420,11 @@ input:focus {
         grid-template-columns: 2fr auto 1fr;
         column-gap: 1em;
         width: 100%;
+    }
+
+    .total {
+        text-align: left;
+        border-bottom: 2px solid #444;
+        margin-bottom: 0.5em;
     }
 }

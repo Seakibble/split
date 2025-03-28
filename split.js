@@ -1,3 +1,4 @@
+// MARK: Variables
 const $start = document.getElementById('start')
 const $end = document.getElementById('end')
 const $split = document.getElementById('split')
@@ -39,12 +40,15 @@ let types = {
     socializing: '🍻',
     writing: '🖋️',
 }
+
+// MARK: Populate Type Options
 for (const type in types) {
     $type.innerHTML += `<option value="${type}"><span>${types[type]}</span> <span>${titleCase(type)}</span></option>`
 }
 
 $editSelect.innerHTML = $type.innerHTML
 
+// MARK: Initialize Data
 let sessionStart = null
 let sessionTimer = null
 let sessionActive = false
@@ -83,8 +87,7 @@ if (data == null) {
     }
 }
 
-
-
+// MARK: Start Button
 $start.addEventListener('click', (e) => {
     sessionActive = true
 
@@ -113,6 +116,7 @@ $start.addEventListener('click', (e) => {
     }, 500)
 })
 
+// MARK: End Button
 $end.addEventListener('click', (e) => {
     sessionActive = false
     if ($task.value) {
@@ -138,16 +142,19 @@ $end.addEventListener('click', (e) => {
     splitTimes = []
 })
 
+// MARK: Split Button
 $split.addEventListener('click', () => {
     handleSplit()
 })
-$task.addEventListener('keypress', (e)=>{
+
+// MARK: Task Keypress
+$task.addEventListener('keypress', (e) => {
     if (e.code == "Enter") {
         handleSplit()
     }
 })
 
-// MARK: Edit Split EVNT
+// MARK: Edit Split
 let editing = null
 $splits.addEventListener('click', (e) => {
     let clicky = e.target.closest('.split')
@@ -171,13 +178,11 @@ $splits.addEventListener('click', (e) => {
     }
 })
 
+// MARK: Update Button
 $editUpdate.addEventListener('click', () => {
     $editSplit.classList.add('hide')
 
     let split = splitTimes[editing.dataset.index]
-
-    console.log(split.name, $editInput.value)
-    console.log(split.type, $editSelect.value)
 
     let newName = types[$editSelect.value] + ' ' + $editInput.value
     let newType = $editSelect.value
@@ -193,25 +198,24 @@ $editUpdate.addEventListener('click', () => {
     getStats()
 })
 
+// MARK: Cancel Button
 $editCancel.addEventListener('click', () => {
     $editSplit.classList.add('hide')
     
     editing = null
 })
 
-
 // MARK: startTimer()
 function startTimer() {
     timeObject = makeTimeObject((Date.now() - sessionStart))
     document.querySelector('h1').classList.add('active')
-    $heading.innerText = timeObject.toString()
+    $heading.innerText = toString(timeObject)
 
     sessionTimer = setInterval(() => {
         timeObject = makeTimeObject((Date.now() - sessionStart))
-        $heading.innerText = timeObject.toString()
+        $heading.innerText = toString(timeObject)
     }, 1000)
 }
-
 
 // MARK: titleCase()
 function titleCase(str) {
@@ -219,7 +223,6 @@ function titleCase(str) {
     str[0] = str[0].toUpperCase()
     return str.join('')
 }
-
 
 // MARK: handleSplit()
 function handleSplit() {
@@ -235,7 +238,6 @@ function handleSplit() {
         
     split($type.value)
 }
-
 
 // MARK: split()
 function split(type = false) {
@@ -254,7 +256,7 @@ function split(type = false) {
         let split = {
             name: name,
             diff: diff,
-            timestamp: timeObject.toString(true),
+            timestamp: toString(timeObject, true),
             type: type,
             i: timeObject.i
         }
@@ -265,7 +267,6 @@ function split(type = false) {
         displaySplit(split, splitTimes.length-1)
     }
 }
-
 
 // MARK: displaySplit()
 function displaySplit(split, index = null) {
@@ -278,7 +279,7 @@ function displaySplit(split, index = null) {
     }
 
     let diffTime = makeTimeObject(split.diff)
-    let diffText = diffTime.toText()
+    let diffText = toText(diffTime)
 
     $newSplit.innerHTML += `
                 <div class='name'>${split.name}</div> 
@@ -302,51 +303,54 @@ function makeTimeObject(input) {
         i: input,
         s: seconds,
         m: minutes,
-        h: hours,
-        toString: function (full = false) {
-            let s = Math.floor(this.s)
-            let m = this.m
-            let h = this.h
-
-            if (s < 10) s = '0' + s
-            if (m < 10) m = '0' + m
-            if (h < 10) h = '0' + h
-
-            let string = `${h}:${m}`
-            if (full) string += ':' + s
-            return string
-        },
-        toText: function () {
-            if (Math.floor(this.s) == 0 && this.m == 0 && this.h == 0 ) {
-                return '-'
-            }
-
-            let s = Math.floor(this.s)
-            if (s == 1) {
-                s += '<span class="hide"> </span>s<span class="hide">econd</span>'
-            } else {
-                s += '<span class="hide"> </span>s<span class="hide">econds</span>'
-            }
-
-            let m = ''
-            if (this.m > 1) {
-                m = this.m + '<span class="hide"> </span>m<span class="hide">inutes,</span> '
-            } else if (this.m == 1) {
-                m = this.m + '<span class="hide"> </span>m<span class="hide">inute,</span> '
-            }
-
-            let h = ''
-            if (this.h > 1) {
-                h = this.h + '<span class="hide"> </span>h<span class="hide">ours,</span> '
-            } else if (this.h == 1) {
-                h = this.h + '<span class="hide"> </span>h<span class="hide">our,</span> '
-            }
-
-            return `${h}${m}${s}`
-        }
+        h: hours
     }
 }
 
+// MARK: toString()
+function toString(obj, full = false) {
+    let s = Math.floor(obj.s)
+    let m = obj.m
+    let h = obj.h
+
+    if (s < 10) s = '0' + s
+    if (m < 10) m = '0' + m
+    if (h < 10) h = '0' + h
+
+    let string = `${h}:${m}`
+    if (full) string += ':' + s
+    return string
+}
+
+// MARK: toText()
+function toText(obj) {
+    if (Math.floor(obj.s) == 0 && obj.m == 0 && obj.h == 0) {
+        return '-'
+    }
+
+    let s = Math.floor(obj.s)
+    if (s == 1) {
+        s += '<span class="hide"> </span>s<span class="hide">econd</span>'
+    } else {
+        s += '<span class="hide"> </span>s<span class="hide">econds</span>'
+    }
+
+    let m = ''
+    if (obj.m > 1) {
+        m = obj.m + '<span class="hide"> </span>m<span class="hide">inutes,</span> '
+    } else if (obj.m == 1) {
+        m = obj.m + '<span class="hide"> </span>m<span class="hide">inute,</span> '
+    }
+
+    let h = ''
+    if (obj.h > 1) {
+        h = obj.h + '<span class="hide"> </span>h<span class="hide">ours,</span> '
+    } else if (obj.h == 1) {
+        h = obj.h + '<span class="hide"> </span>h<span class="hide">our,</span> '
+    }
+
+    return `${h}${m}${s}`
+}
 
 // MARK: getStats()
 function getStats() {
@@ -365,7 +369,7 @@ function getStats() {
     let keys = []
     for (category in categories) {
         total += categories[category]
-        let time = makeTimeObject(categories[category]).toString(true)
+        let time = toString(makeTimeObject(categories[category]), true)
         // time = time.split(' ')[0]
         keys.push([category, categories[category], time])
     }
@@ -374,7 +378,9 @@ function getStats() {
         return b[1] - a[1]
     })
 
-    $stats.innerHTML = ''
+    $stats.innerHTML = `<div class='stat total'>
+            <b>Total Time</b> <span><span class="hide">|</span> ${toString(makeTimeObject(total), true)}</span> <span>(100%)</span>
+        </div>`
     for (const key in keys) {
         $stats.innerHTML += `<div class='stat ${keys[key][0]}'>
             <b>${types[keys[key][0]]} ${titleCase(keys[key][0])}</b> <span><span class="hide">|</span> ${keys[key][2]}</span> <span>(${Math.round(keys[key][1] / total * 1000) / 10}%)</span>
@@ -382,7 +388,7 @@ function getStats() {
     }
 }
 
-
+// MARK: save()
 function save() {
     let lastSession = data.sessions[data.sessions.length - 1]
     if (lastSession && lastSession.id == data.id) {
